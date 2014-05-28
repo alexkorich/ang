@@ -1,3 +1,5 @@
 {
   "directory": "app/bower_components"
+    "HTTP_PROXY":"http://proxy.isd.dp.ua:8080",
+	"HTTPS_PROXY":"https://proxy.isd.dp.ua:8080"
 }
