@@ -1,0 +1,74 @@
+var patientControllers = angular.module('patientControllers', []);
+
+// Main controllers like add, search, update, list
+
+patientControllers.controller('patientSearchCtrl', function($rootScope, $scope, $http, $location){
+	$scope.searchData = {};
+
+	$scope.searchPatient = function() {
+		$http.post('/search', $scope.searchData)
+			.success(function(data) {
+				$scope.searchData = {};
+				if ( data.length > 0 ) {
+					$rootScope.patients = data;
+					$location.path('/list');
+				} else {
+					$location.path('/new');
+				}	
+			})
+			.error(function(data){
+				console.log(data);
+			});
+	};
+
+    //implements sweet alert bar and another checks !!!
+});
+
+
+patientControllers.controller('patientListCtrl', function($rootScope, $scope, $location){
+    $scope.patients = $rootScope.patients;
+
+    $scope.switchToUpdateView = function(){
+        $location.path('/update');
+    }
+
+});
+
+patientControllers.controller('createPatientCtrl', function($scope, $http){
+    $scope.createData = {};
+
+    $scope.createPatient = function() {
+        $http.post('/new', $scope.createData)
+            .success(function (data) {
+                $scope.createData = {};
+                console.log('Ive got an ' + data);
+            })
+            .error(function (data) {
+                console.log(data);
+            });
+    }
+
+});
+
+patientControllers.controller('patientUpdateCtrl', function($scope, $http){
+    //send patient id from $rootScope OR ???
+    //fill al form inputs by data from DB - send http-request ?? GET maybe
+    //call update function $scope.updatePatient
+    //as a feature will be a confirmation
+
+});
+
+// Visual controllers
+
+patientControllers.controller('showCreationFormCtrl', function($scope){
+    $scope.alertShow        = true;
+    $scope.createFormHide   = true;
+    $scope.createButtonShow = true;
+
+    $scope.showCreationForm = function() {
+        $scope.alertShow            = !$scope.alertShow;
+        $scope.createButtonShow     = !$scope.createButtonShow;
+        $scope.createFormHide       = !$scope.createFormHide;
+    }
+
+});
